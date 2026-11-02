@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { SubmitEvent, useState } from "react";
 import { countries } from "./countries";
 import styles from "./signup.module.css";
 import { useSignUp } from "@clerk/nextjs"
@@ -150,7 +150,7 @@ export function SignupForm({ role }: SignupFormProps) {
     }
   }
 
-  async function resetVerificationCode(){
+  async function resendVerificationCode(){
     setStatus("")
     setIsError(false)
     if(!signUp){
@@ -170,7 +170,7 @@ export function SignupForm({ role }: SignupFormProps) {
     }
   }
 
-  if(!isVerifying){
+  if(isVerifying){
     return(
       <div className="w-full max-w-md text-left">
         <button type="button" onClick={() => {
@@ -212,11 +212,21 @@ export function SignupForm({ role }: SignupFormProps) {
           >
             {isLoading ? "Verifying" : "Verify and continue"}
           </button>
-          <button type="button" disabled={isLoading || verificationCode.length !== 6}
-          className="h-12 w-full cursor-pointer rounded-xl bg-[#252724] text-sm font-semibold text-white shadow-sm transition hover:bg-[#3b3e39] disabled:cursor-not-allowed disabled:opacity-50"
+          <button type="button" onClick={() => void resendVerificationCode()} disabled={isLoading}
+          className="w-full cursor-pointer text-center text-sm font-semibold text-[#497446] disabled:opacity-50"
           >
-            {isLoading ? "Verifying" : "Verify and continue"}
+            Send a new code
           </button>
+          {status && (
+            <p
+              className={`rounded-xl px-4 py-3 text-center text-xs font-medium ${
+                isError ? "bg-[#fff0ee] text-[#9a4d45]" : "bg-[#edf5eb] text-[#4e704b]"
+              }`}
+              role={isError ? "alert" : "status"}
+            >
+              {status}
+            </p>
+          )}
         </form>
       </div>
     )
