@@ -3,6 +3,8 @@ import cors from "cors"
 import { ApiResponse } from "./types/common.types.js"
 import { API_PREFIX } from "./config/constants.js"
 import { apiRouter } from "./routes/index.js"
+import { notFoundHandler } from "./middleware/not-found.middleware.js"
+import { errorHandler } from "./middleware/error.middleware.js"
 
 export const app = express()
 
@@ -20,3 +22,5 @@ app.get("/", (_request, response) => {
 })
 
 app.use(API_PREFIX, apiRouter)
+app.use(notFoundHandler)
+app.use(errorHandler)

@@ -9,5 +9,6 @@ const parsePort = (value: string | undefined): number => {
 }
 
 export const env = {
-    port: parsePort(process.env.PORT)
+    port: parsePort(process.env.PORT),
+    nodeEnv: process.env.NODE_ENV || "development"
 } as const
